@@ -1,0 +1,105 @@
+{
+  "name": "vscode-intercept",
+  "displayName": "Intercept Policy Scanner",
+  "description": "Scan your codebase against INTERCEPT policies",
+  "version": "0.0.1",
+  "publisher": "Flávio HG",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xfhg/intercept-vscode.git"
+  },
+  "keywords": ["intercept", "policy", "scanner", "security"],
+  "icon": "media/intercept-icon.png",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:interceptResultsView"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "intercept.scanWorkspace",
+        "title": "Scan Workspace with Intercept"
+      },
+      {
+        "command": "intercept.refreshResults",
+        "title": "Refresh Intercept Results",
+        "icon": "$(refresh)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "intercept-sidebar",
+          "title": "Intercept",
+          "icon": "media/intercept-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "intercept-sidebar": [
+        {
+          "id": "interceptResultsView",
+          "name": "Scan Results",
+          "icon": "media/intercept-icon.svg"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "interceptResultsView",
+        "contents": "No scan results available. [Run Scan](command:intercept.scanWorkspace)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "intercept.refreshResults",
+          "when": "view == interceptResultsView",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Intercept",
+      "properties": {
+        "intercept.executablePath": {
+          "type": "string",
+          "default": "intercept",
+          "description": "Path to the Intercept executable"
+        },
+        "intercept.policyFile": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the Intercept policy file"
+        },
+        "intercept.scanOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Trigger Intercept scan on file save"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.60.0",
+    "@types/node": "^14.14.37",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.25.0",
+    "typescript": "^4.2.4"
+  }
+}
